@@ -1,33 +1,4 @@
-        .admin-login {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .admin-login.hidden {
-            display: none;
-        }    <div class="admin-login hidden" id="adminLogin">
-        <div class="container">
-            <div class="header">
-                <div class="logo">🔐 Admin Access</div>
-                <div class="subtitle">Yama Wontons Dashboard</div>
-            </div>
-            <div class="section">
-                <h3>Login Required</h3>
-                <input type="text" id="adminUsername" placeholder="Username" style="margin-bottom: 15px;">
-                <input type="password" id="adminPassword" placeholder="Password" style="margin-bottom: 15px;">
-                <button class="next-btn" onclick="checkAdminLogin()">Access Dashboard</button>
-                <div id="loginError" style="color: #e74c3c; margin-top: 10px; display: none;">Invalid username or password</div>
-            </div>
-        </div>
-    </div><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -202,18 +173,6 @@
             transition: width 0.3s;
         }
 
-        .admin-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            padding: 10px;
-            border-radius: 50%;
-            cursor: pointer;
-            color: white;
-        }
-
         .admin-panel {
             background: white;
             border-radius: 15px;
@@ -272,23 +231,6 @@
 
         .rec-try { background: #d4edda; color: #155724; }
         .rec-avoid { background: #f8d7da; color: #721c24; }
-
-        .admin-login {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .admin-login.hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -331,7 +273,9 @@
                     <button class="record-btn" id="recordBtn" onclick="toggleRecording()">🎤</button>
                 </div>
                 <div class="status" id="recordingStatus">Tap the microphone to start recording</div>
-                <button onclick="testMicrophone()" style="background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 5px; margin: 10px 0; cursor: pointer;">🔧 Test Microphone Access</button>
+                <button onclick="requestMicAccess()" style="background: #667eea; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; display: none;" id="enableMicBtn">
+                    🎤 Enable Voice Recording
+                </button>
                 <textarea id="textInput" style="display:none; height:100px;" placeholder="Type your response here..."></textarea>
                 <button class="next-btn" onclick="nextPrompt()" id="nextPromptBtn" style="display:none;">Continue</button>
             </div>
@@ -363,8 +307,25 @@
         </div>
     </div>
 
+    <!-- Admin Login -->
+    <div id="adminLogin" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: none; justify-content: center; align-items: center; z-index: 1000;">
+        <div class="container">
+            <div class="header">
+                <div class="logo">🔐 Admin Access</div>
+                <div class="subtitle">Yama Wontons Dashboard</div>
+            </div>
+            <div class="section">
+                <h3>Login Required</h3>
+                <input type="text" id="adminUsername" placeholder="Username" style="margin-bottom: 15px;">
+                <input type="password" id="adminPassword" placeholder="Password" style="margin-bottom: 15px;">
+                <button class="next-btn" onclick="checkAdminLogin()">Access Dashboard</button>
+                <div id="loginError" style="color: #e74c3c; margin-top: 10px; display: none;">Invalid username or password</div>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin Panel -->
-    <div class="container hidden" id="adminPanel">
+    <div class="container" id="adminPanel" style="display: none;">
         <div class="admin-panel">
             <h2>Admin Dashboard</h2>
             
@@ -403,6 +364,9 @@
     </div>
 
     <script>
+        // AssemblyAI Configuration
+        const ASSEMBLYAI_API_KEY = 'e9b5d8457ac7451da46140ec4f74713b';
+        
         let currentStep = 1;
         let isRecording = false;
         let mediaRecorder;
@@ -410,6 +374,14 @@
         let currentFeedback = {};
         let allFeedback = JSON.parse(localStorage.getItem('wontonFeedback') || '[]');
         let userProfiles = JSON.parse(localStorage.getItem('userProfiles') || '{}');
+
+        // Admin credentials
+        const ADMIN_CREDENTIALS = {
+            username: 'yamawontons',
+            password: 'whiskey2024'
+        };
+
+        let isAdminLoggedIn = false;
 
         function updateProgress() {
             const progress = (currentStep / 4) * 100;
@@ -442,7 +414,6 @@
         }
 
         async function requestMicrophonePermission() {
-            // Don't auto-request on page load, wait for user interaction
             document.getElementById('recordingStatus').innerHTML = `
                 <div style="margin: 15px 0;">
                     <button onclick="requestMicAccess()" style="background: #667eea; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px;">
@@ -460,23 +431,13 @@
         async function requestMicAccess() {
             try {
                 console.log('Requesting microphone permission...');
-                console.log('Current URL:', window.location.href);
-                console.log('Protocol:', window.location.protocol);
-                
-                // Check if getUserMedia is available
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error('getUserMedia not supported');
-                }
-                
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     audio: true 
                 });
                 console.log('Microphone access granted!');
                 
-                // Stop the stream immediately
                 stream.getTracks().forEach(track => track.stop());
                 
-                // Update UI to show success
                 document.getElementById('recordingStatus').innerHTML = `
                     <div style="color: #2ecc71; font-weight: bold; margin-bottom: 10px;">✅ Microphone enabled!</div>
                     <div style="font-size: 0.9em; color: #666;">Tap the microphone button below to start recording</div>
@@ -487,95 +448,13 @@
                 document.getElementById('nextPromptBtn').style.display = 'none';
                 
             } catch (error) {
-                console.log('Full error details:', error);
-                console.log('Error name:', error.name);
-                console.log('Error message:', error.message);
-                
+                console.log('Permission denied:', error);
                 document.getElementById('recordingStatus').innerHTML = `
-                    <div style="color: #e74c3c; font-weight: bold; margin-bottom: 10px;">❌ Microphone access failed</div>
-                    <div style="font-size: 0.9em; color: #666; margin: 10px 0; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-                        <strong>Debug Info:</strong><br>
-                        Error: ${error.name}<br>
-                        Message: ${error.message}<br>
-                        URL: ${window.location.href}<br>
-                        Protocol: ${window.location.protocol}<br>
-                        Browser: ${navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : 'Other'}
-                    </div>
-                    <div style="font-size: 0.9em; color: #667eea; margin-top: 15px;">
-                        💬 No worries - text feedback works perfectly! Just type your response below.
-                    </div>
-                `;
-                
-                showMicrophoneError(error.name);
-            }
-        }
-
-        function showMicrophoneError(errorType) {
-            let message = '';
-            let instructions = '';
-
-            switch(errorType) {
-                case 'NotAllowedError':
-                    message = 'Microphone access denied';
-                    instructions = 'Click the 🔒 icon in your address bar and allow microphone access, then refresh the page.';
-                    break;
-                case 'NotFoundError':
-                    message = 'No microphone found';
-                    instructions = 'Please connect a microphone or use the text input below.';
-                    break;
-                case 'NotSupportedError':
-                    message = 'Voice recording not supported';
-                    instructions = 'Your browser doesn\'t support voice recording. Please use the text input below.';
-                    break;
-                default:
-                    message = 'Voice recording unavailable';
-                    instructions = 'For voice recording to work, this page needs to be accessed via HTTPS. Please type your feedback below instead.';
-            }
-
-            document.getElementById('recordingStatus').innerHTML = `
-                <div style="color: #e74c3c; font-weight: bold; margin-bottom: 10px;">${message}</div>
-                <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">${instructions}</div>
-                <div style="font-size: 0.9em; color: #667eea;">💬 No worries - text feedback works just as well!</div>
-            `;
-            
-            document.getElementById('recordBtn').style.display = 'none';
-            document.getElementById('textInput').style.display = 'block';
-            document.getElementById('nextPromptBtn').style.display = 'block';
-        }
-
-        async function testMicrophone() {
-            try {
-                console.log('Testing microphone access...');
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                console.log('Microphone access granted!');
-                
-                document.getElementById('recordingStatus').innerHTML = `
-                    <div style="color: #2ecc71; font-weight: bold;">✅ Microphone test successful!</div>
-                    <div style="font-size: 0.9em; color: #666;">You can now use voice recording. Tap the microphone button above.</div>
-                `;
-                
-                // Stop the test stream
-                stream.getTracks().forEach(track => track.stop());
-                
-                // Show the record button and hide text input
-                document.getElementById('recordBtn').style.display = 'block';
-                document.getElementById('textInput').style.display = 'none';
-                document.getElementById('nextPromptBtn').style.display = 'none';
-                
-            } catch (error) {
-                console.log('Microphone test failed:', error);
-                document.getElementById('recordingStatus').innerHTML = `
-                    <div style="color: #e74c3c; font-weight: bold;">❌ Microphone test failed</div>
+                    <div style="color: #e74c3c; font-weight: bold; margin-bottom: 10px;">❌ Microphone access denied</div>
                     <div style="font-size: 0.9em; color: #666; margin: 10px 0;">
-                        Error: ${error.name} - ${error.message}
-                    </div>
-                    <div style="font-size: 0.9em; color: #667eea;">
-                        ${window.location.protocol === 'https:' ? 
-                            'Try allowing microphone permissions in your browser settings.' : 
-                            'This page needs to be accessed via HTTPS for microphone access.'}
+                        Please allow microphone access in your browser settings, or use text input below.
                     </div>
                 `;
-                showMicrophoneError(error.name);
             }
         }
 
@@ -602,8 +481,11 @@
                     document.getElementById('recordBtn').textContent = '🛑';
                     document.getElementById('recordingStatus').textContent = 'Recording... tap to stop';
                 } catch (error) {
-                    console.log('Recording failed:', error.name);
-                    showMicrophoneError(error.name);
+                    console.log('Recording failed:', error);
+                    document.getElementById('recordingStatus').textContent = 'Recording failed - please use text input below';
+                    document.getElementById('recordBtn').style.display = 'none';
+                    document.getElementById('textInput').style.display = 'block';
+                    document.getElementById('nextPromptBtn').style.display = 'block';
                 }
             } else {
                 if (mediaRecorder && isRecording) {
@@ -617,9 +499,6 @@
             }
         }
 
-        // AssemblyAI Configuration
-        const ASSEMBLYAI_API_KEY = 'e9b5d8457ac7451da46140ec4f74713b';
-        
         function processAudioFeedback() {
             document.getElementById('recordingStatus').innerHTML = `
                 <div style="color: #3498db; font-weight: bold; margin-bottom: 10px;">🔄 Converting speech to text...</div>
@@ -630,18 +509,15 @@
             currentFeedback.audioBlob = audioBlob;
             currentFeedback.audioTimestamp = new Date().toISOString();
             
-            // Try AssemblyAI transcription
             if (ASSEMBLYAI_API_KEY && ASSEMBLYAI_API_KEY !== 'YOUR_API_KEY_HERE') {
                 transcribeWithAssemblyAI(audioBlob);
             } else {
-                // Fallback to manual entry
                 showTranscriptionResult("", false, 0, "API key not configured");
             }
         }
 
         async function transcribeWithAssemblyAI(audioBlob) {
             try {
-                // Step 1: Upload audio file
                 const uploadResponse = await fetch('https://api.assemblyai.com/v2/upload', {
                     method: 'POST',
                     headers: {
@@ -653,7 +529,6 @@
                 const uploadData = await uploadResponse.json();
                 const audioUrl = uploadData.upload_url;
                 
-                // Step 2: Request transcription
                 const transcriptResponse = await fetch('https://api.assemblyai.com/v2/transcript', {
                     method: 'POST',
                     headers: {
@@ -669,7 +544,6 @@
                 const transcriptData = await transcriptResponse.json();
                 const transcriptId = transcriptData.id;
                 
-                // Step 3: Poll for completion
                 pollForTranscription(transcriptId);
                 
             } catch (error) {
@@ -679,7 +553,7 @@
         }
 
         async function pollForTranscription(transcriptId) {
-            const maxAttempts = 30; // 30 seconds max
+            const maxAttempts = 30;
             let attempts = 0;
             
             const poll = async () => {
@@ -699,7 +573,6 @@
                     } else if (data.status === 'error') {
                         showTranscriptionResult("", false, 0, "Transcription failed");
                     } else if (attempts < maxAttempts) {
-                        // Still processing, check again in 1 second
                         setTimeout(poll, 1000);
                     } else {
                         showTranscriptionResult("", false, 0, "Transcription timeout");
@@ -735,13 +608,11 @@
                 ${errorMessage ? `<div style="font-size: 0.8em; color: #666; font-style: italic;">Note: You can add your AssemblyAI API key to enable automatic transcription.</div>` : ''}
             `;
             
-            // Show text area with transcribed text for editing
             document.getElementById('textInput').style.display = 'block';
             document.getElementById('textInput').value = transcribedText;
             document.getElementById('textInput').placeholder = "Type exactly what you said in your recording...";
             document.getElementById('textInput').focus();
             
-            // Add buttons for re-record and continue
             const existingButtons = document.querySelector('.transcription-buttons');
             if (existingButtons) existingButtons.remove();
             
@@ -764,15 +635,12 @@
         }
 
         function reRecord() {
-            // Reset for new recording
             currentFeedback.audioBlob = null;
             audioChunks = [];
             
-            // Remove button container
             const buttons = document.querySelector('.transcription-buttons');
             if (buttons) buttons.remove();
             
-            // Reset UI
             document.getElementById('recordingStatus').textContent = 'Ready to record - tap the microphone';
             document.getElementById('textInput').style.display = 'none';
             document.getElementById('textInput').value = '';
@@ -806,7 +674,6 @@
                 </div>
             `;
             
-            // Remove button container
             const buttons = document.querySelector('.transcription-buttons');
             if (buttons) buttons.remove();
             
@@ -814,50 +681,10 @@
             document.getElementById('nextPromptBtn').style.display = 'block';
         }
 
-        function simulateSpeechToText(wontonType) {
-            // In production, replace this with actual speech-to-text API
-            const responses = {
-                'hangover-helper': [
-                    "This really helped clear my head after last night. The ginger flavor is perfect and soothing.",
-                    "I was feeling pretty rough this morning but this wonton soup made me feel so much better. The broth is amazing.",
-                    "It's good but maybe a bit too gingery for my taste. I can see how it would help with hangovers though.",
-                    "Exactly what I needed! The warming spices really helped settle my stomach and clear the fog in my brain."
-                ],
-                'energy-boost': [
-                    "Wow, I actually feel more energized after eating this! The combination of pork and shrimp is incredible.",
-                    "This is really filling and satisfying. Perfect after my workout, I feel completely refueled.",
-                    "The flavors are amazing but I'm not sure I'm feeling the energy boost I expected. Still tasty though.",
-                    "This is exactly what I needed for my afternoon slump. The broth is so rich and nourishing."
-                ],
-                'apres-adventure': [
-                    "This duck is so rich and comforting, absolutely perfect after a long day of skiing!",
-                    "The five-spice blend is incredible and I feel very restored after eating this. Such elegant flavors.",
-                    "Really good flavor but it might be too rich for me to eat regularly. Great for special occasions.",
-                    "This hits the spot after being outdoors all day. The duck broth is deeply satisfying and warming."
-                ],
-                'alpenglow-spicy': [
-                    "The spice level is absolutely perfect! It's really warming me up on this cold evening.",
-                    "I love the ma la sensation, exactly what I was craving. The numbing and spicy balance is spot on.",
-                    "This is too spicy for me, I couldn't finish the whole bowl. But the beef quality is excellent.",
-                    "Great for cold weather! The Sichuan peppers create such an interesting tingling sensation."
-                ],
-                'wind-down-sleepy': [
-                    "This is so calming and peaceful, I can already feel myself relaxing. Perfect before bedtime.",
-                    "The mushroom flavors are amazing and very zen-like. I love the subtle earthiness.",
-                    "It's too subtle for my taste, I was hoping for more pronounced flavors. Nice concept though.",
-                    "Actually feeling more relaxed already! The tofu is silky and the broth is very soothing."
-                ]
-            };
-            
-            const wontonResponses = responses[wontonType] || responses['energy-boost'];
-            return wontonResponses[Math.floor(Math.random() * wontonResponses.length)];
-        }
-
         function nextPrompt() {
             let response = '';
             const textInput = document.getElementById('textInput');
             
-            // Handle text input if no voice recording was made
             if (textInput.style.display !== 'none' && textInput.value.trim() && !currentFeedback.audioBlob) {
                 response = textInput.value.trim();
                 const sentiment = analyzeSentiment(response);
@@ -881,42 +708,9 @@
             updateProgress();
         }
 
-        function getSimulatedResponse(wontonType) {
-            const responses = {
-                'hangover-helper': [
-                    "It really helped clear my head, the ginger was perfect!",
-                    "Felt so much better after eating this, very soothing.",
-                    "Too gingery for me, but I can see how it would help others."
-                ],
-                'energy-boost': [
-                    "Wow, I actually feel more energized! The broth is incredible.",
-                    "Really filling and satisfying, perfect after my workout.",
-                    "Good but didn't give me the energy boost I expected."
-                ],
-                'apres-adventure': [
-                    "This duck is so rich and comforting, perfect after skiing!",
-                    "The five-spice blend is incredible, feels very restorative.",
-                    "Good flavor but maybe too rich for everyday eating."
-                ],
-                'alpenglow-spicy': [
-                    "The spice level is perfect, really warming me up!",
-                    "Love the ma la sensation, exactly what I was craving.",
-                    "Too spicy for me, couldn't finish it."
-                ],
-                'wind-down-sleepy': [
-                    "So calming and peaceful, perfect before bed.",
-                    "The mushroom flavors are amazing, very zen-like.",
-                    "Too subtle for my taste, needed more flavor."
-                ]
-            };
-            
-            const wontonResponses = responses[wontonType] || responses['energy-boost'];
-            return wontonResponses[Math.floor(Math.random() * wontonResponses.length)];
-        }
-
         function analyzeSentiment(text) {
-            const positiveWords = ['delicious', 'perfect', 'amazing', 'incredible', 'helped', 'better', 'energized', 'comforting', 'relaxed', 'warming'];
-            const negativeWords = ['too salty', 'too spicy', 'bland', 'underwhelming', 'disappointing', 'couldn\'t finish'];
+            const positiveWords = ['delicious', 'loved', 'perfect', 'amazing', 'favorite', 'great', 'best', 'incredible', 'fantastic', 'helped', 'better', 'energized', 'comforting', 'relaxed', 'warming'];
+            const negativeWords = ['too salty', 'too spicy', 'bland', 'okay', 'nothing special', 'underwhelming', 'disappointing', 'soggy', 'sluggish', 'couldn\'t finish'];
             
             let score = 0;
             const lowerText = text.toLowerCase();
@@ -943,14 +737,12 @@
             
             const lowerText = text.toLowerCase();
             
-            // Check for flavor issues
             if (lowerText.includes('too salty')) insights.flavorFeedback.push('negative: too salty');
             if (lowerText.includes('too spicy')) insights.flavorFeedback.push('negative: too spicy');
             if (lowerText.includes('bland')) insights.flavorFeedback.push('negative: bland');
             if (lowerText.includes('perfect')) insights.flavorFeedback.push('positive: perfect');
             if (lowerText.includes('amazing')) insights.flavorFeedback.push('positive: amazing');
             
-            // Check for effects
             const effectKeywords = {
                 'hangover-helper': ['clear', 'head', 'better', 'soothing'],
                 'energy-boost': ['energy', 'energized', 'boost'],
@@ -965,7 +757,6 @@
                 });
             }
             
-            // Check buy again intent
             if (lowerText.includes('again') || lowerText.includes('definitely')) {
                 insights.buyAgain = true;
             } else if (lowerText.includes('never') || lowerText.includes('wouldn\'t')) {
@@ -979,14 +770,11 @@
             const effect = document.getElementById('effectSelect').value;
             currentFeedback.effect = effect;
             
-            // Calculate overall sentiment from text responses
             if (currentFeedback.responses.length > 0) {
                 currentFeedback.sentiment = currentFeedback.responses[0].sentiment;
             }
             
-            // Store audio data separately for admin access
             if (currentFeedback.audioBlob) {
-                // Convert audio blob to base64 for storage
                 const reader = new FileReader();
                 reader.onloadend = function() {
                     currentFeedback.audioData = reader.result;
@@ -1053,7 +841,6 @@
             currentStep = 1;
             currentFeedback = {};
             
-            // Remove any leftover button containers
             const buttons = document.querySelector('.transcription-buttons');
             if (buttons) buttons.remove();
             
@@ -1070,18 +857,10 @@
             updateProgress();
         }
 
-        // Admin credentials (in production, use proper authentication)
-        const ADMIN_CREDENTIALS = {
-            username: 'yamawontons',
-            password: 'whiskey2024'
-        };
-
-        let isAdminLoggedIn = false;
-
         function showAdminLogin() {
-            document.getElementById('surveyContainer').classList.add('hidden');
-            document.getElementById('adminLogin').classList.remove('hidden');
-            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('surveyContainer').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'flex';
+            document.getElementById('adminPanel').style.display = 'none';
         }
 
         function checkAdminLogin() {
@@ -1090,8 +869,8 @@
             
             if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
                 isAdminLoggedIn = true;
-                document.getElementById('adminLogin').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
                 document.getElementById('loginError').style.display = 'none';
                 loadAdminData();
             } else {
@@ -1100,23 +879,14 @@
             }
         }
 
-        function toggleAdmin() {
-            if (!isAdminLoggedIn) {
-                showAdminLogin();
-                return;
-            }
-            
-            const survey = document.getElementById('surveyContainer');
-            const admin = document.getElementById('adminPanel');
-            
-            if (survey.classList.contains('hidden')) {
-                survey.classList.remove('hidden');
-                admin.classList.add('hidden');
-            } else {
-                survey.classList.add('hidden');
-                admin.classList.remove('hidden');
-                loadAdminData();
-            }
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminLogin').style.display = 'none';
+            document.getElementById('surveyContainer').style.display = 'flex';
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
         }
 
         function loadAdminData() {
@@ -1240,16 +1010,6 @@
             document.getElementById('recipeInsights').innerHTML = insightsHTML || '<p>No insights available yet.</p>';
         }
 
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            document.getElementById('adminPanel').classList.add('hidden');
-            document.getElementById('adminLogin').classList.add('hidden');
-            document.getElementById('surveyContainer').classList.remove('hidden');
-            document.getElementById('adminUsername').value = '';
-            document.getElementById('adminPassword').value = '';
-            document.getElementById('loginError').style.display = 'none';
-        }
-
         function loadAudioRecordings() {
             const audioFeedback = allFeedback.filter(f => f.audioData || f.audioBlob);
             
@@ -1298,9 +1058,6 @@
             document.getElementById('audioRecordings').innerHTML = audioHTML;
         }
 
-        // Initialize
-        updateProgress();
-
         function downloadHTML() {
             const htmlContent = document.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html' });
@@ -1313,6 +1070,9 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
+
+        // Initialize
+        updateProgress();
     </script>
 </body>
 </html>
