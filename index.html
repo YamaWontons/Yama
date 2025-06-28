@@ -1,0 +1,935 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Yama Wontons - Voice Feedback&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 500px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.header {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.logo {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2.5em;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #667eea, #764ba2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-webkit-background-clip: text;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>-webkit-text-fill-color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.subtitle {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.1em;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.section {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 25px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid rgba(255, 255, 255, 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.section.hidden {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>h3 {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 1.3em;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>select, input, textarea {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: border-color 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>select:focus, input:focus, textarea:focus {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #667eea;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.voice-section {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.prompt {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #f8f9ff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-left: 4px solid #667eea;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.voice-controls {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 20px 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.record-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #667eea, #764ba2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.record-btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: scale(1.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.record-btn.recording {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #ff4757;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: pulse 1s infinite;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes pulse {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>0% { transform: scale(1); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>50% { transform: scale(1.05); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>100% { transform: scale(1); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.next-btn, .submit-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #667eea, #764ba2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.next-btn:hover, .submit-btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.status {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 15px 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-style: italic;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-bar {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #e0e0e0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.progress-fill {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #667eea, #764ba2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 0%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: width 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.admin-toggle {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>right: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(0, 0, 0, 0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.admin-panel {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 70vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.stats-grid {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.stat-card {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(45deg, #667eea, #764ba2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.stat-number {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 2em;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: bold;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chart-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 20px 0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.user-profile {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #f8f9ff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.recommendations {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.rec-item {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 0.9em;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.rec-try { background: #d4edda; color: #155724; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.rec-avoid { background: #f8d7da; color: #721c24; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="admin-toggle" onclick="toggleAdmin()"&gt;⚙️&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="downloadHTML()" style="position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.1); border: none; padding: 10px; border-radius: 50%; cursor: pointer; color: white;"&gt;💾&lt;/button&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container" id="surveyContainer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="logo"&gt;🥟 Yama Wontons&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="subtitle"&gt;WhiskeyandWontons Feedback&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="progress-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="progress-fill" id="progressFill"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Step 1: Wonton Selection --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section" id="step1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;Which wonton did you just taste?&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="wontonSelect"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Select a wonton...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="hangover-helper"&gt;Hangover Helper (Chicken Ginger)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="energy-boost"&gt;Energy Boost (Ultimate Pork &amp; Shrimp)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="apres-adventure"&gt;Après-Adventure (Duck)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="alpenglow-spicy"&gt;Alpenglow Spicy (Sichuan Beef)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="wind-down-sleepy"&gt;Wind-Down Sleepy (Tofu &amp; Mushroom)&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="customerName" placeholder="Your name (optional)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="next-btn" onclick="nextStep()"&gt;Continue&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Step 2: Voice Feedback --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section hidden" id="step2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;Voice Feedback&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="voice-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="prompt"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Tell me about the wonton you just tried - what did you think?</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="voice-controls"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button class="record-btn" id="recordBtn" onclick="toggleRecording()"&gt;🎤&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="status" id="recordingStatus"&gt;Tap the microphone to start recording&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="testMicrophone()" style="background: #3498db; color: white; border: none; padding: 8px 16px; border-radius: 5px; margin: 10px 0; cursor: pointer;"&gt;🔧 Test Microphone Access&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;textarea id="textInput" style="display:none; height:100px;" placeholder="Type your response here..."&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="next-btn" onclick="nextPrompt()" id="nextPromptBtn" style="display:none;"&gt;Continue&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Step 3: Effects Tracking --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section hidden" id="step3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;How are you feeling? (Optional)&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p style="color: #666; margin-bottom: 15px;"&gt;This helps us understand if our wontons are having their intended effects.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;select id="effectSelect"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value=""&gt;Select if you notice any effects...&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="clearer-head"&gt;Clearer head / less foggy&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="more-energy"&gt;More energized&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="better-recovery"&gt;Better recovery / less exhausted&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="warmer"&gt;Feeling warmer&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="more-relaxed"&gt;More relaxed / calmer&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="satisfied"&gt;Just satisfied and full&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;option value="no-effect"&gt;No particular effect yet&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="submit-btn" onclick="submitFeedback()"&gt;Submit Feedback&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;!-- Thank You --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="section hidden" id="thankYou"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;Thank You! 🙏&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;Your feedback helps us make better wontons!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="user-profile" id="userProfile"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="next-btn" onclick="resetSurvey()"&gt;Give More Feedback&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Admin Panel --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container hidden" id="adminPanel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="admin-panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2&gt;Admin Dashboard&lt;/h2&gt;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="stats-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="stat-number" id="totalFeedback"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;Total Feedback&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="stat-number" id="avgRating"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;Avg Sentiment&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="stat-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="stat-number" id="topWonton"&gt;-&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div&gt;Top Wonton&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="chart-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;Wonton Performance&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="wontonChart"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="chart-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h3&gt;Recipe Insights &amp; Recommendations&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="recipeInsights"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="next-btn" onclick="toggleAdmin()"&gt;Back to Survey&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let isRecording = false;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let mediaRecorder;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let audioChunks = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentFeedback = {};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let allFeedback = JSON.parse(localStorage.getItem('wontonFeedback') || '[]');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let userProfiles = JSON.parse(localStorage.getItem('userProfiles') || '{}');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateProgress() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const progress = (currentStep / 4) * 100;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('progressFill').style.width = progress + '%';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function nextStep() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wonton = document.getElementById('wontonSelect').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const name = document.getElementById('customerName').value || 'Anonymous';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!wonton) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert('Please select a wonton first!');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentFeedback = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>wonton: wonton,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>customerName: name,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>timestamp: new Date().toISOString(),</p>
+<p class="p1"><span class="Apple-converted-space">                </span>responses: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sentiment: null,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>effect: null</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step1').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step2').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>requestMicrophonePermission();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function requestMicrophonePermission() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Don't auto-request on page load, wait for user interaction</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="margin: 15px 0;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;button onclick="requestMicAccess()" style="background: #667eea; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>🎤 Enable Voice Recording</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="font-size: 0.9em; color: #666;"&gt;Click above to allow microphone access, or use text input below&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recordBtn').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textInput').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('nextPromptBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function requestMicAccess() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Requesting microphone permission...');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Current URL:', window.location.href);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Protocol:', window.location.protocol);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Check if getUserMedia is available</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error('getUserMedia not supported');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const stream = await navigator.mediaDevices.getUserMedia({<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audio: true<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Microphone access granted!');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Stop the stream immediately</p>
+<p class="p1"><span class="Apple-converted-space">                </span>stream.getTracks().forEach(track =&gt; track.stop());</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Update UI to show success</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="color: #2ecc71; font-weight: bold; margin-bottom: 10px;"&gt;✅ Microphone enabled!&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #666;"&gt;Tap the microphone button below to start recording&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('textInput').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('nextPromptBtn').style.display = 'none';</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Full error details:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Error name:', error.name);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Error message:', error.message);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="color: #e74c3c; font-weight: bold; margin-bottom: 10px;"&gt;❌ Microphone access failed&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #666; margin: 10px 0; background: #f8f9fa; padding: 10px; border-radius: 5px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;strong&gt;Debug Info:&lt;/strong&gt;&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Error: ${error.name}&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Message: ${error.message}&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>URL: ${window.location.href}&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Protocol: ${window.location.protocol}&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Browser: ${navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : 'Other'}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #667eea; margin-top: 15px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>💬 No worries - text feedback works perfectly! Just type your response below.</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMicrophoneError(error.name);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showMicrophoneError(errorType) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let message = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let instructions = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>switch(errorType) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>case 'NotAllowedError':</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message = 'Microphone access denied';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>instructions = 'Click the 🔒 icon in your address bar and allow microphone access, then refresh the page.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>case 'NotFoundError':</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message = 'No microphone found';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>instructions = 'Please connect a microphone or use the text input below.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>case 'NotSupportedError':</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message = 'Voice recording not supported';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>instructions = 'Your browser doesn\'t support voice recording. Please use the text input below.';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>break;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>default:</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>message = 'Voice recording unavailable';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>instructions = 'For voice recording to work, this page needs to be accessed via HTTPS. Please type your feedback below instead.';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="color: #e74c3c; font-weight: bold; margin-bottom: 10px;"&gt;${message}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="font-size: 0.9em; color: #666; margin-bottom: 15px;"&gt;${instructions}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div style="font-size: 0.9em; color: #667eea;"&gt;💬 No worries - text feedback works just as well!&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recordBtn').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textInput').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('nextPromptBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function testMicrophone() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Testing microphone access...');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const stream = await navigator.mediaDevices.getUserMedia({ audio: true });</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Microphone access granted!');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="color: #2ecc71; font-weight: bold;"&gt;✅ Microphone test successful!&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #666;"&gt;You can now use voice recording. Tap the microphone button above.&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Stop the test stream</p>
+<p class="p1"><span class="Apple-converted-space">                </span>stream.getTracks().forEach(track =&gt; track.stop());</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Show the record button and hide text input</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('textInput').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('nextPromptBtn').style.display = 'none';</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Microphone test failed:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordingStatus').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="color: #e74c3c; font-weight: bold;"&gt;❌ Microphone test failed&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #666; margin: 10px 0;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>Error: ${error.name} - ${error.message}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="font-size: 0.9em; color: #667eea;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${window.location.protocol === 'https:' ?<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>'Try allowing microphone permissions in your browser settings.' :<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>'This page needs to be accessed via HTTPS for microphone access.'}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>showMicrophoneError(error.name);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function toggleRecording() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!isRecording) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const stream = await navigator.mediaDevices.getUserMedia({ audio: true });</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mediaRecorder = new MediaRecorder(stream);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audioChunks = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mediaRecorder.ondataavailable = event =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>audioChunks.push(event.data);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mediaRecorder.onstop = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>processAudioFeedback();</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>stream.getTracks().forEach(track =&gt; track.stop());</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mediaRecorder.start();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>isRecording = true;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordBtn').classList.add('recording');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordBtn').textContent = '🛑';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordingStatus').textContent = 'Recording... tap to stop';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log('Recording failed:', error.name);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showMicrophoneError(error.name);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (mediaRecorder &amp;&amp; isRecording) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>mediaRecorder.stop();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>isRecording = false;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordBtn').classList.remove('recording');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordBtn').textContent = '🎤';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('recordingStatus').textContent = 'Processing...';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function processAudioFeedback() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setTimeout(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const simulatedResponse = getSimulatedResponse(currentFeedback.wonton);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sentiment = analyzeSentiment(simulatedResponse);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const insights = analyzeResponse(simulatedResponse, currentFeedback.wonton);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentFeedback.responses.push({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>response: simulatedResponse,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>sentiment: sentiment,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>insights: insights</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('recordingStatus').textContent = `Recorded: "${simulatedResponse}"`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('nextPromptBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}, 2000);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function nextPrompt() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let response = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const textInput = document.getElementById('textInput');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (textInput.style.display !== 'none' &amp;&amp; textInput.value.trim()) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>response = textInput.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const sentiment = analyzeSentiment(response);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const insights = analyzeResponse(response, currentFeedback.wonton);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentFeedback.responses.push({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>response: response,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>sentiment: sentiment,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>insights: insights</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (currentFeedback.responses.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert('Please provide your feedback first!');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step2').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step3').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 3;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getSimulatedResponse(wontonType) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const responses = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'hangover-helper': [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"It really helped clear my head, the ginger was perfect!",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Felt so much better after eating this, very soothing.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Too gingery for me, but I can see how it would help others."</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'energy-boost': [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Wow, I actually feel more energized! The broth is incredible.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Really filling and satisfying, perfect after my workout.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Good but didn't give me the energy boost I expected."</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'apres-adventure': [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"This duck is so rich and comforting, perfect after skiing!",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"The five-spice blend is incredible, feels very restorative.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Good flavor but maybe too rich for everyday eating."</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'alpenglow-spicy': [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"The spice level is perfect, really warming me up!",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Love the ma la sensation, exactly what I was craving.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Too spicy for me, couldn't finish it."</p>
+<p class="p1"><span class="Apple-converted-space">                </span>],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'wind-down-sleepy': [</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"So calming and peaceful, perfect before bed.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"The mushroom flavors are amazing, very zen-like.",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>"Too subtle for my taste, needed more flavor."</p>
+<p class="p1"><span class="Apple-converted-space">                </span>]</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wontonResponses = responses[wontonType] || responses['energy-boost'];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return wontonResponses[Math.floor(Math.random() * wontonResponses.length)];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function analyzeSentiment(text) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const positiveWords = ['delicious', 'perfect', 'amazing', 'incredible', 'helped', 'better', 'energized', 'comforting', 'relaxed', 'warming'];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const negativeWords = ['too salty', 'too spicy', 'bland', 'underwhelming', 'disappointing', 'couldn\'t finish'];</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let score = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lowerText = text.toLowerCase();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>positiveWords.forEach(word =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (lowerText.includes(word)) score += 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>negativeWords.forEach(word =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (lowerText.includes(word)) score -= 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (score &gt; 0) return 'positive';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (score &lt; 0) return 'negative';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return 'neutral';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function analyzeResponse(text, wontonType) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const insights = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>flavorFeedback: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>effectsFeedback: [],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>buyAgain: null</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const lowerText = text.toLowerCase();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Check for flavor issues</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('too salty')) insights.flavorFeedback.push('negative: too salty');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('too spicy')) insights.flavorFeedback.push('negative: too spicy');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('bland')) insights.flavorFeedback.push('negative: bland');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('perfect')) insights.flavorFeedback.push('positive: perfect');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('amazing')) insights.flavorFeedback.push('positive: amazing');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Check for effects</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const effectKeywords = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'hangover-helper': ['clear', 'head', 'better', 'soothing'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'energy-boost': ['energy', 'energized', 'boost'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'apres-adventure': ['comforting', 'restorative'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'alpenglow-spicy': ['warming', 'warm'],</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'wind-down-sleepy': ['relaxed', 'calm', 'peaceful']</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (effectKeywords[wontonType]) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>effectKeywords[wontonType].forEach(word =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (lowerText.includes(word)) insights.effectsFeedback.push(word);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Check buy again intent</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (lowerText.includes('again') || lowerText.includes('definitely')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>insights.buyAgain = true;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else if (lowerText.includes('never') || lowerText.includes('wouldn\'t')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>insights.buyAgain = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return insights;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function submitFeedback() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const effect = document.getElementById('effectSelect').value;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentFeedback.effect = effect;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Calculate overall sentiment</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (currentFeedback.responses.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentFeedback.sentiment = currentFeedback.responses[0].sentiment;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>allFeedback.push(currentFeedback);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>localStorage.setItem('wontonFeedback', JSON.stringify(allFeedback));</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateUserProfile();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step3').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('thankYou').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 4;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress();</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>displayUserProfile();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateUserProfile() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const name = currentFeedback.customerName;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!userProfiles[name]) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>userProfiles[name] = {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>preferences: {},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>totalFeedback: 0</p>
+<p class="p1"><span class="Apple-converted-space">                </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const profile = userProfiles[name];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wonton = currentFeedback.wonton;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!profile.preferences[wonton]) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>profile.preferences[wonton] = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>profile.preferences[wonton].push({</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sentiment: currentFeedback.sentiment,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>timestamp: currentFeedback.timestamp</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>profile.totalFeedback++;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>localStorage.setItem('userProfiles', JSON.stringify(userProfiles));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function displayUserProfile() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const name = currentFeedback.customerName;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const profile = userProfiles[name];</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!profile) return;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('userProfile').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h4&gt;Your Taste Profile, ${name}!&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p&gt;Total feedback given: ${profile.totalFeedback}&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function resetSurvey() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentStep = 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentFeedback = {};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('thankYou').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('step1').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('wontonSelect').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('customerName').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('effectSelect').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textInput').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('textInput').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recordBtn').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('nextPromptBtn').style.display = 'none';</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function toggleAdmin() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const survey = document.getElementById('surveyContainer');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const admin = document.getElementById('adminPanel');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (survey.classList.contains('hidden')) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>survey.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>admin.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>survey.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>admin.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>loadAdminData();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadAdminData() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('totalFeedback').textContent = allFeedback.length;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const sentimentScores = allFeedback.map(f =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (f.sentiment === 'positive') return 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (f.sentiment === 'negative') return -1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const avgSentiment = sentimentScores.length &gt; 0 ? (sentimentScores.reduce((a, b) =&gt; a + b, 0) / sentimentScores.length).toFixed(1) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('avgRating').textContent = avgSentiment;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wontonCounts = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>allFeedback.forEach(f =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>wontonCounts[f.wonton] = (wontonCounts[f.wonton] || 0) + 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (Object.keys(wontonCounts).length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const topWonton = Object.keys(wontonCounts).reduce((a, b) =&gt; wontonCounts[a] &gt; wontonCounts[b] ? a : b);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('topWonton').textContent = getWontonDisplayName(topWonton);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadWontonChart();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadRecipeInsights();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getWontonDisplayName(wontonKey) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const names = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'hangover-helper': 'Hangover Helper',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'energy-boost': 'Energy Boost',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'apres-adventure': 'Après-Adventure',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'alpenglow-spicy': 'Alpenglow Spicy',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'wind-down-sleepy': 'Wind-Down Sleepy'</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return names[wontonKey] || wontonKey;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadWontonChart() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const wontonStats = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>allFeedback.forEach(f =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!wontonStats[f.wonton]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>wontonStats[f.wonton] = { positive: 0, negative: 0, neutral: 0, total: 0 };</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>wontonStats[f.wonton][f.sentiment]++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>wontonStats[f.wonton].total++;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let chartHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Object.entries(wontonStats).forEach(([wonton, stats]) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const positivePercent = (stats.positive / stats.total * 100).toFixed(1);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>chartHTML += `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="margin-bottom: 15px; padding: 15px; background: #f8f9ff; border-radius: 10px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;strong&gt;${getWontonDisplayName(wonton)}&lt;/strong&gt; (${stats.total} responses)</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;div style="background: #e0e0e0; border-radius: 10px; overflow: hidden; margin-top: 5px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div style="background: #2ecc71; height: 20px; width: ${positivePercent}%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${positivePercent}% positive</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('wontonChart').innerHTML = chartHTML || '&lt;p&gt;No data available yet.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadRecipeInsights() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const insights = {};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>allFeedback.forEach(f =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!insights[f.wonton]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>insights[f.wonton] = {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>name: getWontonDisplayName(f.wonton),</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>flavorIssues: [],</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>buyAgainCount: 0,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>totalResponses: 0</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const insight = insights[f.wonton];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>insight.totalResponses++;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (f.responses &amp;&amp; f.responses.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>f.responses.forEach(response =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (response.insights) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>if (response.insights.flavorFeedback) {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>response.insights.flavorFeedback.forEach(feedback =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>if (feedback.includes('negative:')) {</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>insight.flavorIssues.push(feedback.replace('negative: ', ''));</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                            </span></p>
+<p class="p1"><span class="Apple-converted-space">                            </span>if (response.insights.buyAgain) {</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>insight.buyAgainCount++;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let insightsHTML = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>Object.values(insights).forEach(insight =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const buyAgainPercent = insight.totalResponses &gt; 0 ? ((insight.buyAgainCount / insight.totalResponses) * 100).toFixed(1) : 0;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>insightsHTML += `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div style="margin-bottom: 20px; padding: 20px; background: #f8f9ff; border-radius: 10px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;h4&gt;${insight.name}&lt;/h4&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;p&gt;&lt;strong&gt;Would Buy Again:&lt;/strong&gt; ${buyAgainPercent}%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>${insight.flavorIssues.length &gt; 0 ? `</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;div style="margin: 10px 0;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;strong style="color: #e74c3c;"&gt;Common Issues:&lt;/strong&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>${[...new Set(insight.flavorIssues)].join(', ')}</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('recipeInsights').innerHTML = insightsHTML || '&lt;p&gt;No insights available yet.&lt;/p&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Initialize</p>
+<p class="p1"><span class="Apple-converted-space">        </span>updateProgress();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
