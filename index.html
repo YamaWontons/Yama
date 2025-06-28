@@ -1,4 +1,18 @@
-<!DOCTYPE html>
+    <div class="admin-login hidden" id="adminLogin">
+        <div class="container">
+            <div class="header">
+                <div class="logo">🔐 Admin Access</div>
+                <div class="subtitle">Yama Wontons Dashboard</div>
+            </div>
+            <div class="section">
+                <h3>Login Required</h3>
+                <input type="text" id="adminUsername" placeholder="Username" style="margin-bottom: 15px;">
+                <input type="password" id="adminPassword" placeholder="Password" style="margin-bottom: 15px;">
+                <button class="next-btn" onclick="checkAdminLogin()">Access Dashboard</button>
+                <div id="loginError" style="color: #e74c3c; margin-top: 10px; display: none;">Invalid username or password</div>
+            </div>
+        </div>
+    </div><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -246,7 +260,7 @@
     </style>
 </head>
 <body>
-    <button class="admin-toggle" onclick="toggleAdmin()">⚙️</button>
+    <button onclick="showAdminLogin()" style="position: fixed; top: 20px; right: 20px; background: rgba(0,0,0,0.1); border: none; padding: 8px; border-radius: 50%; cursor: pointer; color: white; font-size: 12px; opacity: 0.3;" title="Admin">👤</button>
     <button onclick="downloadHTML()" style="position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.1); border: none; padding: 10px; border-radius: 50%; cursor: pointer; color: white;">💾</button>
     
     <div class="container" id="surveyContainer">
@@ -338,6 +352,11 @@
             </div>
 
             <div class="chart-container">
+                <h3>Audio Recordings</h3>
+                <div id="audioRecordings"></div>
+            </div>
+
+            <div class="chart-container">
                 <h3>Wonton Performance</h3>
                 <div id="wontonChart"></div>
             </div>
@@ -347,7 +366,7 @@
                 <div id="recipeInsights"></div>
             </div>
 
-            <button class="next-btn" onclick="toggleAdmin()">Back to Survey</button>
+            <button class="next-btn" onclick="logoutAdmin()">Logout & Back to Survey</button>
         </div>
     </div>
 
@@ -567,27 +586,158 @@
         }
 
         function processAudioFeedback() {
-            setTimeout(() => {
-                const simulatedResponse = getSimulatedResponse(currentFeedback.wonton);
-                const sentiment = analyzeSentiment(simulatedResponse);
-                const insights = analyzeResponse(simulatedResponse, currentFeedback.wonton);
-                
-                currentFeedback.responses.push({
-                    response: simulatedResponse,
-                    sentiment: sentiment,
-                    insights: insights
-                });
+            // Show processing status
+            document.getElementById('recordingStatus').innerHTML = `
+                <div style="color: #3498db; font-weight: bold; margin-bottom: 10px;">🔄 Converting speech to text...</div>
+                <div style="font-size: 0.9em; color: #666;">Please wait while we process your recording...</div>
+            `;
+            
+            // Create audio blob from recorded chunks
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            currentFeedback.audioBlob = audioBlob;
+            currentFeedback.audioTimestamp = new Date().toISOString();
+            
+            // Try to use Web Speech API for real speech-to-text
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                // For now, we'll simulate but in a more realistic way
+                // In production, you'd process the actual audio blob
+                setTimeout(() => {
+                    showTranscriptionResult("I'm sorry, I couldn't clearly transcribe your audio. Please review and edit below.");
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    showTranscriptionResult("Speech recognition not available in this browser. Please review and edit below.");
+                }, 1500);
+            }
+        }
 
-                document.getElementById('recordingStatus').textContent = `Recorded: "${simulatedResponse}"`;
-                document.getElementById('nextPromptBtn').style.display = 'block';
-            }, 2000);
+        function showTranscriptionResult(transcribedText) {
+            document.getElementById('recordingStatus').innerHTML = `
+                <div style="color: #f39c12; font-weight: bold; margin-bottom: 10px;">⚠️ Please review transcription</div>
+                <div style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                    We attempted to transcribe your audio. Please review and edit the text below to ensure accuracy:
+                </div>
+            `;
+            
+            // Show text area with transcribed text for editing
+            document.getElementById('textInput').style.display = 'block';
+            document.getElementById('textInput').value = transcribedText;
+            document.getElementById('textInput').placeholder = "Edit this transcription to match what you actually said...";
+            
+            // Add buttons for re-record and continue
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.cssText = 'display: flex; gap: 10px; margin: 15px 0;';
+            buttonContainer.innerHTML = `
+                <button onclick="reRecord()" style="flex: 1; padding: 10px; background: #e74c3c; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    🎤 Record Again
+                </button>
+                <button onclick="confirmTranscription()" style="flex: 1; padding: 10px; background: #2ecc71; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    ✓ Text is Correct
+                </button>
+            `;
+            
+            const textInput = document.getElementById('textInput');
+            textInput.parentNode.insertBefore(buttonContainer, textInput.nextSibling);
+            
+            document.getElementById('nextPromptBtn').style.display = 'none';
+        }
+
+        function reRecord() {
+            // Reset for new recording
+            currentFeedback.audioBlob = null;
+            audioChunks = [];
+            
+            // Remove button container
+            const buttons = document.querySelector('div[style*="display: flex; gap: 10px"]');
+            if (buttons) buttons.remove();
+            
+            // Reset UI
+            document.getElementById('recordingStatus').textContent = 'Ready to record - tap the microphone';
+            document.getElementById('textInput').style.display = 'none';
+            document.getElementById('textInput').value = '';
+            document.getElementById('nextPromptBtn').style.display = 'none';
+        }
+
+        function confirmTranscription() {
+            const editedText = document.getElementById('textInput').value.trim();
+            
+            if (!editedText) {
+                alert('Please enter your feedback text before continuing.');
+                return;
+            }
+            
+            const sentiment = analyzeSentiment(editedText);
+            const insights = analyzeResponse(editedText, currentFeedback.wonton);
+            
+            currentFeedback.responses.push({
+                response: editedText,
+                sentiment: sentiment,
+                insights: insights,
+                hasAudioRecording: true,
+                inputMethod: 'voice+edited',
+                transcriptionMethod: 'user-verified'
+            });
+
+            document.getElementById('recordingStatus').innerHTML = `
+                <div style="color: #2ecc71; font-weight: bold; margin-bottom: 10px;">✅ Feedback recorded successfully!</div>
+                <div style="background: #f8f9ff; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                    <strong>Your feedback:</strong> "${editedText}"
+                </div>
+            `;
+            
+            // Remove button container
+            const buttons = document.querySelector('div[style*="display: flex; gap: 10px"]');
+            if (buttons) buttons.remove();
+            
+            document.getElementById('textInput').style.display = 'none';
+            document.getElementById('nextPromptBtn').style.display = 'block';
+        }
+
+        function simulateSpeechToText(wontonType) {
+            // In production, replace this with actual speech-to-text API
+            const responses = {
+                'hangover-helper': [
+                    "This really helped clear my head after last night. The ginger flavor is perfect and soothing.",
+                    "I was feeling pretty rough this morning but this wonton soup made me feel so much better. The broth is amazing.",
+                    "It's good but maybe a bit too gingery for my taste. I can see how it would help with hangovers though.",
+                    "Exactly what I needed! The warming spices really helped settle my stomach and clear the fog in my brain."
+                ],
+                'energy-boost': [
+                    "Wow, I actually feel more energized after eating this! The combination of pork and shrimp is incredible.",
+                    "This is really filling and satisfying. Perfect after my workout, I feel completely refueled.",
+                    "The flavors are amazing but I'm not sure I'm feeling the energy boost I expected. Still tasty though.",
+                    "This is exactly what I needed for my afternoon slump. The broth is so rich and nourishing."
+                ],
+                'apres-adventure': [
+                    "This duck is so rich and comforting, absolutely perfect after a long day of skiing!",
+                    "The five-spice blend is incredible and I feel very restored after eating this. Such elegant flavors.",
+                    "Really good flavor but it might be too rich for me to eat regularly. Great for special occasions.",
+                    "This hits the spot after being outdoors all day. The duck broth is deeply satisfying and warming."
+                ],
+                'alpenglow-spicy': [
+                    "The spice level is absolutely perfect! It's really warming me up on this cold evening.",
+                    "I love the ma la sensation, exactly what I was craving. The numbing and spicy balance is spot on.",
+                    "This is too spicy for me, I couldn't finish the whole bowl. But the beef quality is excellent.",
+                    "Great for cold weather! The Sichuan peppers create such an interesting tingling sensation."
+                ],
+                'wind-down-sleepy': [
+                    "This is so calming and peaceful, I can already feel myself relaxing. Perfect before bedtime.",
+                    "The mushroom flavors are amazing and very zen-like. I love the subtle earthiness.",
+                    "It's too subtle for my taste, I was hoping for more pronounced flavors. Nice concept though.",
+                    "Actually feeling more relaxed already! The tofu is silky and the broth is very soothing."
+                ]
+            };
+            
+            const wontonResponses = responses[wontonType] || responses['energy-boost'];
+            return wontonResponses[Math.floor(Math.random() * wontonResponses.length)];
         }
 
         function nextPrompt() {
             let response = '';
             const textInput = document.getElementById('textInput');
             
-            if (textInput.style.display !== 'none' && textInput.value.trim()) {
+            // Handle text input if no voice recording was made
+            if (textInput.style.display !== 'none' && textInput.value.trim() && !currentFeedback.audioBlob) {
                 response = textInput.value.trim();
                 const sentiment = analyzeSentiment(response);
                 const insights = analyzeResponse(response, currentFeedback.wonton);
@@ -595,9 +745,11 @@
                 currentFeedback.responses.push({
                     response: response,
                     sentiment: sentiment,
-                    insights: insights
+                    insights: insights,
+                    hasAudioRecording: false,
+                    inputMethod: 'text'
                 });
-            } else if (currentFeedback.responses.length === 0) {
+            } else if (currentFeedback.responses.length === 0 && !currentFeedback.audioBlob) {
                 alert('Please provide your feedback first!');
                 return;
             }
@@ -706,11 +858,26 @@
             const effect = document.getElementById('effectSelect').value;
             currentFeedback.effect = effect;
             
-            // Calculate overall sentiment
+            // Calculate overall sentiment from text responses
             if (currentFeedback.responses.length > 0) {
                 currentFeedback.sentiment = currentFeedback.responses[0].sentiment;
             }
             
+            // Store audio data separately for admin access
+            if (currentFeedback.audioBlob) {
+                // Convert audio blob to base64 for storage
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    currentFeedback.audioData = reader.result;
+                    saveAndContinue();
+                };
+                reader.readAsDataURL(currentFeedback.audioBlob);
+            } else {
+                saveAndContinue();
+            }
+        }
+
+        function saveAndContinue() {
             allFeedback.push(currentFeedback);
             localStorage.setItem('wontonFeedback', JSON.stringify(allFeedback));
             
@@ -765,6 +932,10 @@
             currentStep = 1;
             currentFeedback = {};
             
+            // Remove any leftover button containers
+            const buttons = document.querySelector('div[style*="display: flex; gap: 10px"]');
+            if (buttons) buttons.remove();
+            
             document.getElementById('thankYou').classList.add('hidden');
             document.getElementById('step1').classList.remove('hidden');
             document.getElementById('wontonSelect').value = '';
@@ -778,7 +949,42 @@
             updateProgress();
         }
 
+        // Admin credentials (in production, use proper authentication)
+        const ADMIN_CREDENTIALS = {
+            username: 'yamawontons',
+            password: 'whiskey2024'
+        };
+
+        let isAdminLoggedIn = false;
+
+        function showAdminLogin() {
+            document.getElementById('surveyContainer').classList.add('hidden');
+            document.getElementById('adminLogin').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+        }
+
+        function checkAdminLogin() {
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                document.getElementById('loginError').style.display = 'none';
+                loadAdminData();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('adminPassword').value = '';
+            }
+        }
+
         function toggleAdmin() {
+            if (!isAdminLoggedIn) {
+                showAdminLogin();
+                return;
+            }
+            
             const survey = document.getElementById('surveyContainer');
             const admin = document.getElementById('adminPanel');
             
@@ -815,6 +1021,7 @@
             
             loadWontonChart();
             loadRecipeInsights();
+            loadAudioRecordings();
         }
 
         function getWontonDisplayName(wontonKey) {
@@ -910,6 +1117,64 @@
             });
             
             document.getElementById('recipeInsights').innerHTML = insightsHTML || '<p>No insights available yet.</p>';
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminLogin').classList.add('hidden');
+            document.getElementById('surveyContainer').classList.remove('hidden');
+            document.getElementById('adminUsername').value = '';
+            document.getElementById('adminPassword').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function loadAudioRecordings() {
+            const audioFeedback = allFeedback.filter(f => f.audioData || f.audioBlob);
+            
+            if (audioFeedback.length === 0) {
+                document.getElementById('audioRecordings').innerHTML = '<p>No audio recordings yet.</p>';
+                return;
+            }
+            
+            let audioHTML = '';
+            audioFeedback.forEach((feedback, index) => {
+                const date = new Date(feedback.timestamp).toLocaleString();
+                const textSummary = feedback.responses && feedback.responses[0] ? feedback.responses[0].response : 'No text summary provided';
+                const sentiment = feedback.sentiment || 'unknown';
+                
+                audioHTML += `
+                    <div style="margin-bottom: 20px; padding: 15px; background: #f8f9ff; border-radius: 10px; border-left: 4px solid ${sentiment === 'positive' ? '#2ecc71' : sentiment === 'negative' ? '#e74c3c' : '#f39c12'};">
+                        <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 10px;">
+                            <div>
+                                <strong>${feedback.customerName || 'Anonymous'}</strong> - ${getWontonDisplayName(feedback.wonton)}
+                                <br><small style="color: #666;">${date}</small>
+                            </div>
+                            <span style="background: ${sentiment === 'positive' ? '#d4edda' : sentiment === 'negative' ? '#f8d7da' : '#fff3cd'}; padding: 3px 8px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">
+                                ${sentiment}
+                            </span>
+                        </div>
+                        
+                        ${feedback.audioData ? `
+                            <audio controls style="width: 100%; margin: 10px 0;">
+                                <source src="${feedback.audioData}" type="audio/wav">
+                                Your browser does not support audio playback.
+                            </audio>
+                        ` : '<div style="color: #666; font-style: italic;">Audio data not available</div>'}
+                        
+                        <div style="margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.7); border-radius: 5px;">
+                            <strong>Transcribed Text:</strong><br>
+                            <em>"${textSummary}"</em>
+                            ${feedback.responses && feedback.responses[0] && feedback.responses[0].transcriptionMethod ? 
+                                `<br><small style="color: #666;">Method: ${feedback.responses[0].transcriptionMethod}</small>` : ''}
+                        </div>
+                        
+                        ${feedback.effect ? `<div style="margin-top: 5px; color: #666;"><strong>Effects:</strong> ${feedback.effect}</div>` : ''}
+                    </div>
+                `;
+            });
+            
+            document.getElementById('audioRecordings').innerHTML = audioHTML;
         }
 
         // Initialize
